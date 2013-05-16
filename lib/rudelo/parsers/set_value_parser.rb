@@ -40,5 +40,13 @@ module Rudelo
 
 
     end
+
+    class SetValueTransform < Parslet::Transform
+      rule(:element => simple(:element)) { element.to_s }
+      rule(:element_list => subtree(:element_list)) do
+        # element_list = [element_list].flatten
+        Set[*element_list]
+      end
+    end
   end
 end

@@ -12,7 +12,7 @@ describe "Rudelo::Parsers::SetValueParser" do
           {element: "mary"}
         ]
       })
-
+      puts parser.parse(%Q{bob, mary}, trace: true)
       expect(parser).to  parse(%Q{bob}, trace: true).as({
         element_list: 
           {element: "bob"}

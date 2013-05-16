@@ -1,6 +1,7 @@
 require_relative '../spec_helper'
 
 require 'rudelo/parsers/set_value_parser'
+require 'rudelo/parsers/set_value_transform'
 
 describe "Rudelo::Parsers::SetValueTransform" do
   let(:parser) { Rudelo::Parsers::SetValueParser.new }

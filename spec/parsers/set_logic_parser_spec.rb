@@ -1,4 +1,5 @@
 require_relative '../spec_helper'
+require 'pp'
 
 require 'rudelo/parsers/set_logic_parser'
 
@@ -31,5 +32,22 @@ describe "Rudelo::Parsers::SetLogicParser" do
         :cardinality_expression=>{ :operator=>'cardinality-less-than', :qty=>"4"}
       })
     end
+  end
+  context "cardinality_expression" do
+    let(:expr_parser){ parser.set_construction_expression }
+
+    it "parses set construction" do
+
+      expect(expr_parser).to    parse('$(bob mary) union $(ralph jeff) & $in', trace: true).as({
+        :set_construction_expression=>{
+          :left=>{:element_list=>[{:element=>"bob"}, {:element=>"mary"}] },
+          :right=>[
+            {:op=>"union", :element_list=>[{:element=>"ralph"}, {:element=>"jeff"}]},
+            {:op =>"&", :in_set=>"$in"}
+          ]
+        }
+      })
+    end
+
   end
 end

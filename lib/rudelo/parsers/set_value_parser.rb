@@ -7,6 +7,12 @@ module Rudelo
       include Parslet
       rule(:space)             { match["\t "].repeat(1) }
       rule(:space?)            { space.maybe }
+      def spaced_op(s)
+        space >> str(s).as(:op)  >> space
+      end      
+      def spaced_op?(s)
+        space? >> str(s).as(:op)  >> space?
+      end
     end
 
     module Set
@@ -37,8 +43,9 @@ module Rudelo
 
       rule(:explicit_set)      { 
         open_set >> space? >>
-        bare_element_list >> 
-        close_set >> space?
+        bare_element_list >>
+        space? >>
+        close_set
       }
     end
 

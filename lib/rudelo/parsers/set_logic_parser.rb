@@ -21,6 +21,13 @@ module Rudelo
       rule(:in_set)                       { str("$in").as(:in_set)}
       rule(:set )                           { explicit_set  |  in_set  }
 
+      ########  Cardinality  Expressions ########
+      rule(:cardinality_eq) { str('#=')  |  str('cardinality-equals') }
+      rule(:cardinality_gt) { str('#>')  |  str('cardinality-greater-than') }
+      rule(:cardinality_lt) { str('#<')  |  str('cardinality-less-than') }
+      rule(:cardinality_operator) {
+        cardinality_eq | cardinality_gt | cardinality_lt
+      }
       rule(:cardinality_expression) {(
           cardinality_operator.as(:operator) >> 
           space? >> 
@@ -28,13 +35,22 @@ module Rudelo
         ).as(:cardinality_expression)
       }
 
-      rule(:cardinality_operator) {
-        cardinality_eq | cardinality_gt | cardinality_lt
+      ########  Set Construction  Expressions ########
+      
+      rule(:set_construction_operator){
+        spaced_op?('&')  | spaced_op('intersection') |
+        spaced_op?('+') | spaced_op('union') |
+        spaced_op?('-') | spaced_op('difference') |
+        spaced_op?('^') | spaced_op('exclusive')
+      }
+      rule(:set_construction_expression){
+        (set.as(:left) >>(set_construction_operator >> set).repeat(1).as(:right)).as(:set_construction_expression)
       }
 
-      rule(:cardinality_eq) { str('#=')  |  str('cardinality-equals') }
-      rule(:cardinality_gt) { str('#>')  |  str('cardinality-greater-than') }
-      rule(:cardinality_lt) { str('#<')  |  str('cardinality-less-than') }
+      # rule(:set_construction_expression){
+      #   (set.as(:left) >> set_construction_operator.as(:op) >> (set_construction_expression | set).as(:right)).
+      #     as(:set_construction_expression)
+      # }
 
       rule(:match_expression)    { 
         explicit_set.as(:superset_match) | 

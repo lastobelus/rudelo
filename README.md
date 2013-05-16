@@ -1,14 +1,27 @@
 # Rudelo
 
+## WIP
+Rudelo is a work in progress:
+  * [DONE]set value parser
+  * [DONE]set value transform
+  * [DONE]set expression parser
+    * [DONE]logic
+    * [DONE]construction
+    * [DONE]cardinality
+  * set expression transform
+    * logic
+    * construction
+    * cardinality
+  * rufus decision matcher
+
 Provides Rufus::Decision::Matchers::SetLogic, for use with [rufus-decision][1]
 
 Currently this requires the [pluggable_matchers branch][2] of lastobelus's [fork][3] of [rufus-decision][1]
 
 ## Installation
 
-I won't be publishing this to rubygems until the pluggable matchers support is in the main gem. Until then:
+    In Gemfile:
 
-    gem "rufus-decision", git: "git://github.com/lastobelus/rufus-decision.git", branch: "pluggable_matchers"
     gem 'rudelo', git: "git://github.com/lastobelus/rudelo.git"
 
 And then execute:

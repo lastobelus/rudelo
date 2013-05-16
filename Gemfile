@@ -4,3 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem "rufus-decision", git: "git://github.com/lastobelus/rufus-decision.git", branch: "pluggable_matchers"
+
+group :development do
+  gem "guard-rspec"
+end

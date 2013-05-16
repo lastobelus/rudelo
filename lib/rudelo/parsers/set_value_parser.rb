@@ -3,30 +3,42 @@ require 'parslet'
 module Rudelo
   module Parsers
     class SetValueParser < Parslet::Parser
-      rule(:space)             { match('\s').repeat(1) }
+      rule(:space)             { match["\t "].repeat(1) }
       rule(:space?)            { space.maybe }
 
-      rule(:comma)             { match(',') }
-      rule(:comma?)            { match(',').maybe }
+      rule(:comma)             { str(',') }
+      rule(:comma?)            { str(',').maybe }
       rule(:quote)             { match '"' }
+      rule(:open_set)          { str('$(') }
+      rule(:close_set)         { str(')') }
 
-      rule(:bare_element)      { (space.absent? >> comma.absent? >> any).
+      rule(:unquoted_element)      { 
+         (close_set.absent? >> space.absent? >> comma.absent? >> any).
         repeat(1).as(:element) }
-      rule(:quoted_element)    { (quote >> 
-        (quote.absent? >> any).repeat.as(:element) >> 
+      rule(:quoted_element)    { 
+        (quote >> 
+        (quote.absent? >> any).repeat.
+        as(:element) >> 
         quote)}
-      rule(:element)           { (quoted_element | bare_element) }
-      rule(:bare_delimiter)    { (comma | space) >> space? }
+      rule(:element)           { quoted_element | unquoted_element }
+      rule(:delimiter)    { (comma | space) >> space? }
       rule(:bare_element_list) { 
-        (element >> (bare_delimiter >> element).repeat).
+        (element >> (delimiter >> element).repeat).
         as(:element_list)
       }
 
       rule(:integer)           { match('[0-9]').repeat(1) }
 
+      rule(:explicit_set)      { 
+        open_set >> space? >>
+        bare_element_list >> 
+        close_set >> space?
+      }
 
-      rule(:set)               { bare_element_list }
+      rule(:set)               { explicit_set | bare_element_list }
       root(:set)
+
+
     end
   end
 end

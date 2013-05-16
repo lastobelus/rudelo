@@ -55,8 +55,36 @@ describe "Rudelo::Parsers::SetValueParser" do
           {element: "ralph"}
         ]
       })
+    end
 
+    it "parses explicit sets" do
+      expect(parser).to  parse(%Q{$(bob, mary)}, trace: true).as({
+        element_list: [
+          {element: "bob"},
+          {element: "mary"}
+        ]
+      })
+      expect(parser).to  parse(%Q{$("bob", mary)}, trace: true).as({
+        element_list: [
+          {element: "bob"},
+          {element: "mary"}
+        ]
+      })
+      expect(parser).to  parse(%Q{$("bob)dad", mary)}, trace: true).as({
+        element_list: [
+          {element: "bob)dad"},
+          {element: "mary"}
+        ]
+      })
+      expect(parser).to  parse(%Q{$("bob", mary jeff)}, trace: true).as({
+        element_list: [
+          {element: "bob"},
+          {element: "mary"},
+          {element: "jeff"},          
+        ]
+      })
 
     end
+
   end
 end

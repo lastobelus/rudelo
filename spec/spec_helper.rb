@@ -15,4 +15,3 @@ end
 
 require "parslet"
 require "parslet/rig/rspec"
-require 'parslet/convenience'

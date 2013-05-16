@@ -2,9 +2,15 @@ require 'parslet'
 
 module Rudelo
   module Parsers
-    class SetValueParser < Parslet::Parser
+
+    module Space
+      include Parslet
       rule(:space)             { match["\t "].repeat(1) }
       rule(:space?)            { space.maybe }
+    end
+
+    module Set
+      include Parslet
 
       rule(:comma)             { str(',') }
       rule(:comma?)            { str(',').maybe }
@@ -21,32 +27,28 @@ module Rudelo
         as(:element) >> 
         quote)}
       rule(:element)           { quoted_element | unquoted_element }
-      rule(:delimiter)    { (comma | space) >> space? }
+      rule(:element_delimiter)    { (comma | space) >> space? }
+
+
       rule(:bare_element_list) { 
-        (element >> (delimiter >> element).repeat).
+        (element >> (element_delimiter >> element).repeat).
         as(:element_list)
       }
-
-      rule(:integer)           { match('[0-9]').repeat(1) }
 
       rule(:explicit_set)      { 
         open_set >> space? >>
         bare_element_list >> 
         close_set >> space?
       }
-
-      rule(:set)               { explicit_set | bare_element_list }
-      root(:set)
-
-
     end
 
-    class SetValueTransform < Parslet::Transform
-      rule(:element => simple(:element)) { element.to_s }
-      rule(:element_list => subtree(:element_list)) do
-        # element_list = [element_list].flatten
-        Set[*element_list]
-      end
+    class SetValueParser < Parslet::Parser
+      include Space
+      include Set
+
+      rule(:set_value)               { explicit_set | bare_element_list }
+      root(:set_value)
+
     end
   end
 end

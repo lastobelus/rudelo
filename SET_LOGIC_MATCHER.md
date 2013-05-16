@@ -45,9 +45,12 @@ Set expressions can use the following operators:
 
 #### Cardinality Operators
 
-        #=                 => cardinality ==
-        #<                 => cardinality <
-        #>                 => cardinality >
+        #=
+        cardinality-equals       => size of set ==
+        #<
+        cardinality-less-than    => size of set is less than X
+        #>
+        cardinality-greater-than => cardinality >
 
 #### Set Construction Operators
 

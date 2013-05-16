@@ -57,7 +57,7 @@ Set expressions can use the following operators:
         &|intersection     => intersection of sets
         +|union            => union of sets
         -|difference       => difference of sets
-        ^                  => (set1 + set2) - (set1 & set2)
+        ^|exclusive        => (set1 + set2) - (set1 & set2)
 
 #### Set Logic Operators
 

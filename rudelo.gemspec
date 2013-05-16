@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Rudelo::VERSION
   spec.authors       = ["Michael Johnston"]
   spec.email         = ["lastobelus@mac.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Set Logic Matcher for rufus-decision}
+  spec.summary       = %q{Set Logic Matcher for rufus-decision}
   spec.homepage      = ""
   spec.license       = "MIT"
 

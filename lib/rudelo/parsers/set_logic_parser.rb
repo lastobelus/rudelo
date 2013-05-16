@@ -47,16 +47,37 @@ module Rudelo
         (set.as(:left) >>(set_construction_operator >> set).repeat(1).as(:right)).as(:set_construction_expression)
       }
 
-      # rule(:set_construction_expression){
-      #   (set.as(:left) >> set_construction_operator.as(:op) >> (set_construction_expression | set).as(:right)).
-      #     as(:set_construction_expression)
-      # }
 
-      rule(:match_expression)    { 
-        explicit_set.as(:superset_match) | 
-        ( construction_expression >> cardinality_expression.maybe).as(:construction_set_match )  |
-        ( logic_expression >> cardinality_expression.maybe ).as(:logic_set_match)
+      ########  Set Logic  Expressions ########
+      rule(:set_expression) { set_construction_expression | set }
+      rule(:set_logic_operator){
+        spaced_op?('<', '=')  | spaced_op('subset') |
+        spaced_op?('>', '=') | spaced_op('superset') |
+        spaced_op?('<=') | spaced_op('proper-subset') |
+        spaced_op?('>=') | spaced_op('proper-superset') 
+       }
+      rule(:set_logic_expression){
+        (set_expression.as(:left) >> set_logic_operator >> set.as(:right)).as(:set_logic_expression)
       }
+
+
+
+
+      rule(:match_expression)    { space? >> (
+
+        ( set_logic_expression >> 
+          (space >> cardinality_expression).maybe ).
+        as(:logic_set_match) |
+
+        ( set_construction_expression >> 
+          (space >> cardinality_expression).maybe).
+        as(:construction_set_match )  |
+
+        explicit_set.as(:superset_match) |
+
+        cardinality_expression.as(:cardinality_match)
+        
+      ) >> space? }
 
       root(:match_expression)
 

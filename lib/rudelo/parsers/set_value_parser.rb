@@ -10,8 +10,15 @@ module Rudelo
       def spaced_op(s)
         space >> str(s).as(:op)  >> space
       end      
-      def spaced_op?(s)
-        space? >> str(s).as(:op)  >> space?
+      def spaced_op?(s, protect=nil)
+        if protect
+          # this is necessary when some ops are substrings of
+          # other ops. if you have '>' and '>=', use 
+          # spaced_op?('>', '=') for '>'
+          space? >> str(protect).absent? >> str(s).as(:op)  >> space? >> str(protect).absent?
+        else
+          space? >> str(s).as(:op)  >> space?
+        end
       end
     end
 

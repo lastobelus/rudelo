@@ -1,5 +1,11 @@
 require 'rudelo/parsers/set_value_transform'
 
+class Set
+  def eval
+    self
+  end
+end
+
 module Rudelo
   module Parsers
 
@@ -20,7 +26,7 @@ module Rudelo
 
       SetLogicExpr = Struct.new(:left, :op, :right) {
         def eval
-          left.send(op, right)
+          left.eval.send(op, right)
         end
         def set
           right
@@ -33,9 +39,9 @@ module Rudelo
         end
       }
 
-      SetOp = Struct.new(:op, :arg) {
+      SetOp = Struct.new(:op, :right) {
         def eval(set)
-          set.send(op, arg)
+          set.send(op, right)
         end
       }
 
@@ -44,10 +50,32 @@ module Rudelo
         def eval(set)
           set.size.send(op, qty)
         end
+        def empty?
+          false
+        end
       }
 
-      MatchExpr = Struct.new(:left, :right) {
+      class EmptyExpr
+        def eval(arg=nil)
+          true
+        end
+        def empty?
+          true
+        end
+      end
 
+      MatchExpr = Struct.new(:left, :right) {
+        def eval
+          lvalue = left.eval
+          case lvalue
+          when ::Set
+            right.empty? ? (lvalue.size > 0) : right.eval(lvalue)
+          when ::TrueClass, ::FalseClass
+            lvalue && right.eval(left.set)
+          else
+            nil
+          end
+        end
       }
 
       rule(cardinality_expression: subtree(:expr)){
@@ -100,6 +128,26 @@ module Rudelo
         )
       }
 
+      rule(set_op: subtree(:expr)){
+        SetOp.new(
+          expr[:left], 
+          expr[:right]
+        )
+      }
+
+      rule(match_expression: subtree(:expr)){
+        MatchExpr.new(
+          expr[:left] || in_set, 
+          expr[:right] || EmptyExpr.new
+        )
+      }
+
+      rule(superset_match_expression: simple(:set)){
+        MatchExpr.new(
+          SetLogicExpr.new(in_set, :subset?, set),
+          EmptyExpr.new
+        )
+      }
 
     end
   end

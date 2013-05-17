@@ -67,19 +67,19 @@ module Rudelo
 
 
 
-      rule(:match_expression)    { space? >> (
+      rule(:match_expression) { space? >> (
 
-       set_logic_expression.as(:left) >> 
-        (space >> cardinality_expression.as(:right)).maybe  |
+        set_logic_expression.as(:left) >> 
+          (space >> cardinality_expression.as(:right)).maybe  |
 
-       set_construction_expression.as(:left) >> 
-        (space >> cardinality_expression.as(:right)).maybe  |
-
-        explicit_set.as(:left) |
+        set_construction_expression.as(:left) >> 
+          (space >> cardinality_expression.as(:right)).maybe  |
 
         cardinality_expression.as(:right)
 
-      ).as(:match_expression) >> space? }
+        ).as(:match_expression) |
+
+        explicit_set.as(:superset_match_expression) >> space? }
 
       root(:match_expression)
 

@@ -127,10 +127,8 @@ describe "Rudelo::Parsers::SetLogicParser" do
 
     it "parses an explicit set expression" do
       expect(expr_parser).to    parse('$(bob, jeff)', trace: true).as({
-        match_expression: {
-          left: {
-            element_list: [{element: "bob"}, {element: "jeff"}]
-          }
+        superset_match_expression: {
+          element_list: [{element: "bob"}, {element: "jeff"}]
         }
       })
     end

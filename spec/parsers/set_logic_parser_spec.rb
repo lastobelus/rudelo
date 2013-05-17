@@ -111,15 +111,19 @@ describe "Rudelo::Parsers::SetLogicParser" do
     let(:expr_parser){ parser.match_expression }
     it "parses a bare cardinality expression" do
       expect(expr_parser).to    parse('#= 5', trace: true).as({
-        :cardinality_match => {
-          :cardinality_expression=>{:op=>"#=", :qty=>"5"}
+        match_expression: {
+          right: {
+            cardinality_expression: {op: "#=", qty: "5"}
+          }
         }
       })
     end
     it "parses an explicit set expression" do
       expect(expr_parser).to    parse('$(bob, jeff)', trace: true).as({
-        :superset_match => {
-          :element_list=>[{:element=>"bob"}, {:element=>"jeff"}]
+        match_expression: {
+          left: {
+            element_list: [{element: "bob"}, {element: "jeff"}]
+          }
         }
       })
     end

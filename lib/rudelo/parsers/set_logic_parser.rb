@@ -29,7 +29,7 @@ module Rudelo
         cardinality_eq | cardinality_gt | cardinality_lt
       }
       rule(:cardinality_expression) {(
-          cardinality_operator.as(:operator) >> 
+          cardinality_operator.as(:op) >> 
           space? >> 
           integer.as(:qty)
         ).as(:cardinality_expression)
@@ -76,7 +76,7 @@ module Rudelo
         explicit_set.as(:superset_match) |
 
         cardinality_expression.as(:cardinality_match)
-        
+
       ) >> space? }
 
       root(:match_expression)

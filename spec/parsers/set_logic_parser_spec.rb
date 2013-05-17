@@ -11,7 +11,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
 
     it "parses cardinality (symbols)" do
       expect(expr_parser).to    parse('#= 5', trace: true).as({
-        :cardinality_expression=>{ :operator=>'#=', :qty=>"5"}
+        :cardinality_expression=>{ :op=>'#=', :qty=>"5"}
       })
       expect(expr_parser).to    parse('#> 5', trace: true)
       expect(expr_parser).to    parse('#< 4', trace: true)
@@ -19,7 +19,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
 
     it "parses cardinality (words)" do
       expect(expr_parser).to    parse('cardinality-equals 5', trace: true).as({
-        :cardinality_expression=>{ :operator=>'cardinality-equals', :qty=>"5"}
+        :cardinality_expression=>{ :op=>'cardinality-equals', :qty=>"5"}
       })
       expect(expr_parser).to    parse('cardinality-greater-than 5', trace: true)
       expect(expr_parser).to    parse('cardinality-less-than 4', trace: true)
@@ -112,7 +112,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
     it "parses a bare cardinality expression" do
       expect(expr_parser).to    parse('#= 5', trace: true).as({
         :cardinality_match => {
-          :cardinality_expression=>{:operator=>"#=", :qty=>"5"}
+          :cardinality_expression=>{:op=>"#=", :qty=>"5"}
         }
       })
     end

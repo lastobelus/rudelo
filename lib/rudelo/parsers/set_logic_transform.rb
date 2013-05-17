@@ -9,7 +9,7 @@ module Rudelo
           set.size.send op, qty
         end
       }
-      rule(:element => simple(:element)) { element.to_s }
+
       rule(op: simple(:op)){
         case op
         when '=', 'cardinality-equals';                    :"=="
@@ -24,6 +24,10 @@ module Rudelo
         else
           op.to_sym
         end
+      }
+
+      rule(cardinality_expression: subtree(:expr)){
+        CardinalityExpr.new(expr[:op], expr[:quantity])
       }
     end
   end

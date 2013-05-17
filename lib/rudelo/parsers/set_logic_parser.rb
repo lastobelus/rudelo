@@ -43,8 +43,11 @@ module Rudelo
         spaced_op?('-') | spaced_op('difference') |
         spaced_op?('^') | spaced_op('exclusive')
       }
+      rule(:set_op){
+        (set_construction_operator.as(:left) >> set.as(:right)).as(:set_op)
+      }
       rule(:set_construction_expression){
-        (set.as(:left) >>(set_construction_operator >> set).repeat(1).as(:right)).as(:set_construction_expression)
+        (set.as(:left) >> set_op.repeat(1).as(:right)).as(:set_construction_expression)
       }
 
 

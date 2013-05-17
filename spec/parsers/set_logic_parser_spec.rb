@@ -35,8 +35,15 @@ describe "Rudelo::Parsers::SetLogicParser" do
         :set_construction_expression=>{
           :left=>{:element_list=>[{:element=>"bob"}, {:element=>"mary"}] },
           :right=>[
-            {:op=>"union", :element_list=>[{:element=>"ralph"}, {:element=>"jeff"}]},
-            {:op =>"&", :in_set=>"$in"}
+            { set_op: {
+              left: {op: "union"},
+              right: {element_list:[
+                {:element=>"ralph"}, {:element=>"jeff"}
+                ]}
+              }},
+            { set_op: {
+            left: {op: "&"},
+            right: {:in_set=>"$in"}}}
           ]
         }
       })
@@ -76,12 +83,11 @@ describe "Rudelo::Parsers::SetLogicParser" do
       expect(expr_parser).to    parse('$(bob mary) union $in < $(ralph jeff bob mary)', trace: true).as({
         :set_logic_expression=>{
           :left=> {
-
             :set_construction_expression=>{
               :left=>{
                 :element_list=>[{:element=>"bob"}, {:element=>"mary"}]
               },
-              :right=>[{:op=>"union", :in_set=>"$in"}]
+              :right=>[{set_op: { left: {:op=>"union"}, right: {:in_set=>"$in"}}}]
             }
           },
           :op => "<",
@@ -118,6 +124,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
         }
       })
     end
+
     it "parses an explicit set expression" do
       expect(expr_parser).to    parse('$(bob, jeff)', trace: true).as({
         match_expression: {

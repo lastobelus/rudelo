@@ -21,6 +21,9 @@ module Rudelo
       SetLogicExpr = Struct.new(:left, :op, :right) {
       }
 
+      SetConstructionExpr = Struct.new(:left, :right) {
+      }
+
       # class SetValueTransform < Parslet::Transform
       CardinalityExpr = Struct.new(:op, :qty) {
         def eval(set)
@@ -73,6 +76,14 @@ module Rudelo
           expr[:right]
         )
       }
+
+      rule(set_construction_expression: subtree(:expr)){
+        SetConstructionExpr.new(
+          expr[:left], 
+          expr[:right]
+        )
+      }
+
 
     end
   end

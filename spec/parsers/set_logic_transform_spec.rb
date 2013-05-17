@@ -54,20 +54,36 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
   context "construction expression" do
     it "should transform construction expressions" do
-      s = '$(a b c d) > $in #> 1'
-      t = '$(a b c d) > $in'
-      in_set = Set.new(%w{a b})
+      a = '$(a b c d) > $in #> 1'
+      b = '$(a b c d) > $in'
+      c = '$(k z v) + $in'
+      d = '$(k z v) + $in - $(a) #= 5'
+      in_set = Set.new(%w{a b c})
+      puts "---------- logic alone"
+      # pp parser.parse(b)
+      # puts
+      xform.in_set = in_set
+      pp xform.apply(parser.parse(b))
       puts
-      pp parser.parse(s)
+      puts "---------- logic with cardinality"
+      # pp parser.parse(a)
+      # puts
+      xform.in_set = in_set
+      pp xform.apply(parser.parse(a))
+      puts
+      puts
+      puts "---------- construction alone"
+      pp parser.parse(c)
       puts
       xform.in_set = in_set
-      pp xform.apply(parser.parse(s))
+      pp xform.apply(parser.parse(c))
       puts
-      puts
-      pp parser.parse(t)
+      puts "---------- construction with cardinality"
+      pp parser.parse(a)
       puts
       xform.in_set = in_set
-      pp xform.apply(parser.parse(t))
+      pp xform.apply(parser.parse(d))
+      puts
       puts
     end
 

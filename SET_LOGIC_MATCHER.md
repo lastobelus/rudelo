@@ -65,6 +65,7 @@ Set expressions can use the following operators:
         >|proper_superset  => proper_superset of sets
         <=|subset          => subset of sets
         >=|superset        => superset of sets
+        =|same-as         => equivalent sets
 
         special case: if the cell contains only a set, it is equivalent to
         $in <= $(cell)

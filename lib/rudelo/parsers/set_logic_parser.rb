@@ -57,7 +57,8 @@ module Rudelo
         spaced_op?('<', '=')  | spaced_op('subset') |
         spaced_op?('>', '=') | spaced_op('superset') |
         spaced_op?('<=') | spaced_op('proper-subset') |
-        spaced_op?('>=') | spaced_op('proper-superset') 
+        spaced_op?('>=') | spaced_op('proper-superset') |
+        spaced_op?('=') | spaced_op('same-as') 
        }
       rule(:set_logic_expression){
         (set_expression.as(:left) >> set_logic_operator >> set.as(:right)).as(:set_logic_expression)

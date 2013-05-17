@@ -8,10 +8,10 @@ Rudelo is a work in progress:
     * [DONE]logic
     * [DONE]construction
     * [DONE]cardinality
-  * set expression transform
-    * logic
-    * construction
-    * cardinality
+  * [DONE]set expression transform
+    * [DONE]logic
+    * [DONE]construction
+    * [DONE] cardinality
   * rufus decision matcher
 
 Provides Rufus::Decision::Matchers::SetLogic, for use with [rufus-decision][1]

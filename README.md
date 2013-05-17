@@ -1,6 +1,12 @@
 # Rudelo
+[![Build Status](https://travis-ci.org/lastobelus/rudelo.png)](https://travis-ci.org/lastobelus/rudelo)
 
 Provides Rufus::Decision::Matchers::SetLogic, for use with [rufus-decision][1]
+
+## Requires ruby 1.9.3
+Currently not working on 1.9.2 -- will try to get this working at some point. Probably won't get 1.8.7 working.
+
+
 
 ## Installation
 
@@ -54,6 +60,7 @@ And then execute:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
 
 [1]: https://github.com/jmettraux/rufus-decision
 [2]: https://github.com/lastobelus/rufus-decision/tree/pluggable_matchers

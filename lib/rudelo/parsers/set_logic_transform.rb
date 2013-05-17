@@ -19,19 +19,34 @@ module Rudelo
       end
 
       SetLogicExpr = Struct.new(:left, :op, :right) {
+        def eval
+          left.send(op, right)
+        end
+        def set
+          right
+        end
       }
 
       SetConstructionExpr = Struct.new(:left, :right) {
+        def eval
+          right.reduce(left){|left, set_op| set_op.eval(left) }
+        end
+      }
+
+      SetOp = Struct.new(:op, :arg) {
+        def eval(set)
+          set.send(op, arg)
+        end
       }
 
       # class SetValueTransform < Parslet::Transform
       CardinalityExpr = Struct.new(:op, :qty) {
         def eval(set)
-          set.size.send op, qty
+          set.size.send(op, qty)
         end
       }
 
-      Match = Struct.new(:expr) {
+      MatchExpr = Struct.new(:left, :right) {
 
       }
 
@@ -41,13 +56,14 @@ module Rudelo
 
       def self.translate_op(op)
         case op
-        when '#=', 'cardinality-equals';       :"=="
-        when '#<','cardinality-less-than',
-          'proper-subset';                     :<
-        when '#>','cardinality-greater-than',
-          'proper-superset';                   :>
-        when 'subset';                         :<=
-        when 'superset';                       :>=
+        when '#=', 'cardinality-equals',
+          'same-as', '=';                      :"=="
+        when '#<','cardinality-less-than';     :<
+        when '<','proper-subset';              :proper_subset?
+        when '#>','cardinality-greater-than';  :>
+        when '>', 'proper-superset';           :proper_superset?
+        when '<=', 'subset';                   :subset?
+        when '>=', 'superset';                 :superset?
         when 'intersection';                   :&
         when 'union';                          :+
         when 'difference';                     :-

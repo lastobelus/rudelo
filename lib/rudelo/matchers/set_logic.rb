@@ -22,16 +22,45 @@
 #++
 
 require 'rufus/decision/matcher'
+require 'rudelo/parsers/set_logic_parser'
+require 'rudelo/parsers/set_logic_transform'
 
 module Rudelo
   module Matchers
     class SetLogic < Rufus::Decision::Matcher
 
+
       def matches?(cell, value)
+        in_set = value_transform.apply(value_parser.parse(value))
+        ast(cell).eval(in_set)
       end
 
       def cell_substitution?
         true
+      end
+
+      def asts
+        @asts ||= {}
+      end
+
+      def logic_parser
+        @logic_parser ||= Rudelo::Parsers::SetLogicParser.new
+      end
+
+      def logic_transform
+        @logic_transform ||= Rudelo::Parsers::SetLogicTransform.new
+      end
+
+      def value_parser
+        @value_parser ||= Rudelo::Parsers::SetValueParser.new
+      end
+
+      def value_transform
+        @value_transform ||= Rudelo::Parsers::SetLogicTransform.new
+      end
+
+      def ast(cell)
+        asts[cell] ||= logic_transform.apply(logic_parser.parse(cell))
       end
 
     end

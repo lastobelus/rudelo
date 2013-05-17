@@ -22,6 +22,9 @@ Currently this requires the [pluggable_matchers branch][2] of lastobelus's [fork
 
     In Gemfile:
 
+    # until 1.4.0 is published
+    gem 'rufus-decision', git: 'https://github.com/jmettraux/rufus-decision.git'
+
     gem 'rudelo', git: "git://github.com/lastobelus/rudelo.git"
 
 And then execute:
@@ -31,31 +34,32 @@ And then execute:
 ## Usage
 
     TABLE = Rufus::Decision::Table.new(%{
-      in:group, out:situation
-      $(bob jeff mary alice ralph) & $in #= 2, company
-      $(bob jeff mary alice ralph) & $in #= 3, crowd
-      $(bob jeff mary alice ralph) >= $in #> 3, exclusive-party
-      $(bob jeff mary alice ralph) & $in #> 3, party
-      $(bob jeff mary alice ralph) & $in #> 4, PARTY!
-    })
+        in:group, out:situation
+        $(bob jeff mary alice ralph) & $in #= 2, company
+        $(bob jeff mary alice ralph) & $in same-as $in #= 3, crowd
+        $(bob jeff mary alice ralph) >= $in #> 3, exclusive-party
+        $(bob jeff mary alice ralph) & $in < $in #> 5, PARTY!
+        $(bob jeff mary alice ralph) & $in < $in #> 3, party
+      })
+    TABLE.matchers.unshift Rudelo::Matchers::SetLogic.new
 
-    TABLE.transform({group: "bob alice"})
-    # => {group: "bob alice", situation: "company"}
+    table.transform({'group' =>  "bob alice"})
+    #=> {'group' => "bob alice", 'situation' => "company"}
 
-    TABLE.transform({group: "bob alice jeff"})
-    # => {group: "bob alice", situation: "crowd"}
+    table.transform({'group' => "bob alice jeff"})
+    #=> {'group' => "bob alice jeff", 'situation' => "crowd"})
 
-    TABLE.transform({group: "bob alice jeff mary"})
-    # => {group: "bob alice jeff mary don bev", situation: "exclusive-party"}
+    table.transform({'group' => "bob alice jeff ralph"})
+    #=> {'group' => "bob alice jeff ralph", 'situation' => "exclusive-party"}
 
-    TABLE.transform({group: "bob alice jeff don"})
-    # => {group: "bob alice", situation: "party"}
+    table.transform({'group' => "bob alice jeff don"})
+    #=> {'group' => "bob alice jeff don", 'situation' => "party"}
 
-    TABLE.transform({group: "bob alice jeff"})
-    # => {group: "bob alice jeff mary", situation: "PARTY!"}
+    table.transform({'group' => "bob alice jeff mary ralph don"})
+    #=> {'group' => "bob alice jeff mary ralph don", 'situation' => "PARTY!"}
 
-    TABLE.transform({group: "bob alice jeff mary don bev"})
-    # => {group: "bob alice jeff mary don bev", situation: "PARTY!"}
+    table.transform({'group' => "bob alice jeff mary don bev"})
+    #=> {'group' => "bob alice jeff mary don bev", 'situation' => "PARTY!"}
 
 
 

@@ -75,7 +75,7 @@ Set expressions can use the following operators:
 * cardinality operators must always be the last operator if present
 * a cell can contain only one cardinality operator; use multiple cells for logic
 * set construction operators may not follow set logic operators
-* when a cardinality operator follows a logic operator, the sense is (set expression) && (cardinality expression applied to rightmost set in set expression)
+* when a cardinality operator follows a logic operator, the sense is (set expression) && (cardinality expression applied to rightmost set in set expression).
 * when a cardinality operator follows a (series of) set construction operator(s) it applies to the final constructed set
 * if a cell contains a cardinality operator it matches the input if the cardinality expression is true
 * if a cell contains a set logic operator it matches the input if the set logic expression is true

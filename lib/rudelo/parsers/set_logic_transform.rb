@@ -15,7 +15,7 @@ module Rudelo
 
       attr_accessor :in_set, :set_value
       def initialize(in_set=::Set.new, &block)
-        @in_set = in_set
+        @in_set = in_set.dup # the dup is vital because we are going to be pointery later
         @set_value = SetValueTransform.new
         super()
       end
@@ -45,7 +45,6 @@ module Rudelo
         end
       }
 
-      # class SetValueTransform < Parslet::Transform
       CardinalityExpr = Struct.new(:op, :qty) {
         def eval(set)
           set.size.send(op, qty)
@@ -64,8 +63,13 @@ module Rudelo
         end
       end
 
-      MatchExpr = Struct.new(:left, :right) {
-        def eval
+      MatchExpr = Struct.new(:left, :right, :in_set) {
+        def eval(in_set_override=nil)
+          # I've always wondered what these replace methods were for
+          # and now I know. To make references more pointery.
+          # The purpose of this is so we can construct a transform
+          # once and use it with different values for in_set.
+          in_set.replace(in_set_override) unless in_set_override.nil?
           lvalue = left.eval
           case lvalue
           when ::Set
@@ -138,14 +142,16 @@ module Rudelo
       rule(match_expression: subtree(:expr)){
         MatchExpr.new(
           expr[:left] || in_set, 
-          expr[:right] || EmptyExpr.new
+          expr[:right] || EmptyExpr.new,
+          in_set
         )
       }
 
       rule(superset_match_expression: simple(:set)){
         MatchExpr.new(
           SetLogicExpr.new(in_set, :subset?, set),
-          EmptyExpr.new
+          EmptyExpr.new,
+          in_set
         )
       }
 

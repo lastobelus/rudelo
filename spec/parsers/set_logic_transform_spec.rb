@@ -247,7 +247,23 @@ describe "Rudelo::Parsers::SetLogicTransform" do
      '$(a b c) ^ $in < $(a e k f)', in_set: %w{b c d})).to be_false }
   end
 
+  context "using transform with multiple in-set values" do
+    it "allows re-using a transform" do
+      abc = Set.new(%w{a b c})
+      efg = Set.new(%w{e f g})
+      expr = '$in same-as $(a b c)'
 
+      transform = Rudelo::Parsers::SetLogicTransform.new(abc)
+      ast = transform.apply(parser.parse(expr))
+
+      expect(ast.eval).to be_true
+
+      expect(ast.eval(efg)).to be_false
+
+      expect(ast.eval(abc)).to be_true
+    end
+
+  end
 
 end
 

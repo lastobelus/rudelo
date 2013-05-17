@@ -1,22 +1,6 @@
 # Rudelo
 
-## WIP
-Rudelo is a work in progress:
-  * [DONE]set value parser
-  * [DONE]set value transform
-  * [DONE]set expression parser
-    * [DONE]logic
-    * [DONE]construction
-    * [DONE]cardinality
-  * [DONE]set expression transform
-    * [DONE]logic
-    * [DONE]construction
-    * [DONE] cardinality
-  * rufus decision matcher
-
 Provides Rufus::Decision::Matchers::SetLogic, for use with [rufus-decision][1]
-
-Currently this requires the [pluggable_matchers branch][2] of lastobelus's [fork][3] of [rufus-decision][1]
 
 ## Installation
 

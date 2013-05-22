@@ -5,6 +5,13 @@ require 'rufus-decision'
 describe "Rudelo::Matchers::SetLogic" do
   subject{Rudelo::Matchers::SetLogic.new}
 
+  context "non-set cells never match" do
+    specify{ expect(subject.matches?('5', '5')).to be_false}
+    specify{ expect(subject.matches?(5, 4)).to be_false}
+    specify{ expect(subject.matches?('bob', 'mary')).to be_false}
+    specify{ expect(subject.matches?('bob', 'bob')).to be_false}
+  end
+
   it "matches multiple values against multiple cells correctly" do
     cell1 = "$in same-as $(a b c)"
     cell2 = "$in same-as $(k f r)"

@@ -29,8 +29,11 @@ module Rudelo
   module Matchers
     class SetLogic < Rufus::Decision::Matcher
 
+      attr_accessor :force
 
       def matches?(cell, value)
+        evaluator = ast(cell)
+        return false if evaluator.nil?
         in_set = value_transform.apply(value_parser.parse(value))
         ast(cell).eval(in_set)
       end
@@ -60,7 +63,12 @@ module Rudelo
       end
 
       def ast(cell)
-        asts[cell] ||= logic_transform.apply(logic_parser.parse(cell))
+        asts[cell] ||= begin
+          logic_transform.apply(logic_parser.parse(cell))
+        rescue
+          raise if force
+          nil
+        end
       end
 
     end

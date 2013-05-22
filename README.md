@@ -4,7 +4,7 @@
 Provides Rufus::Decision::Matchers::SetLogic, for use with [rufus-decision][1]
 
 ## Requires ruby 1.9.3
-Currently not working on 1.9.2 -- will try to get this working at some point. Probably won't get 1.8.7 working.
+Currently not working on 1.9.2 -- I will try to get this working at some point. I Probably won't get 1.8.7 working.
 
 
 
@@ -51,7 +51,8 @@ And then execute:
     table.transform({'group' => "bob alice jeff mary don bev"})
     #=> {'group' => "bob alice jeff mary don bev", 'situation' => "PARTY!"}
 
-
+## Documentation
+For a detailed description of the mini-language the set logic matcher uses, see [SET_LOGIC_MATCHER.md][4]
 
 ## Contributing
 
@@ -65,3 +66,4 @@ And then execute:
 [1]: https://github.com/jmettraux/rufus-decision
 [2]: https://github.com/lastobelus/rufus-decision/tree/pluggable_matchers
 [3]: https://github.com/lastobelus/rufus-decision
+[4]: https://github.com/lastobelus/rudelo/tree/SET_LOGIC_MATCHER.md

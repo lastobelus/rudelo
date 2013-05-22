@@ -38,7 +38,7 @@ module Rudelo
       def matches?(cell, value)
         evaluator = ast(cell)
         return false if evaluator.nil?
-        in_set = value_transform.apply(value_parser.parse(value))
+        in_set = value_transform.apply(value_parser.parse(value)) unless in_set.is_a?(Set)
         ast(cell).eval(in_set)
       end
 

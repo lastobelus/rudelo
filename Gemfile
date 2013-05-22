@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rufus-decision', git: 'https://github.com/jmettraux/rufus-decision.git'
+
 group :development do
   gem "guard-rspec"
 end

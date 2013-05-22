@@ -28,8 +28,12 @@ require 'rudelo/parsers/set_logic_transform'
 module Rudelo
   module Matchers
     class SetLogic < Rufus::Decision::Matcher
-
+      SYNTAX_EXPR = %r{\$\([^)]\)|\$in}
       attr_accessor :force
+
+      def should_match?(cell, value)
+        ! (cell =~ SYNTAX_EXPR).nil?
+      end
 
       def matches?(cell, value)
         evaluator = ast(cell)

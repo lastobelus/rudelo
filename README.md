@@ -52,7 +52,15 @@ And then execute:
     #=> {'group' => "bob alice jeff mary don bev", 'situation' => "PARTY!"}
 
 ## Documentation
+
 For a detailed description of the mini-language the set logic matcher uses, see [SET_LOGIC_MATCHER.md][4]
+
+## Short-Circuiting
+
+The current released version of rufus-decision does not provide for matchers to shortcircuit. This can cause errors if you have a SetLogic matcher followed by a String matcher. I have a branch of rufus-decision that does short-circuiting that is pending review, if you need to use it add this to your Gemfile:
+
+```gem 'rufus-decision', git: 'https://github.com/lastobelus/rufus-decision.git', branch: 'short_circuit_matchers'
+```
 
 ## Contributing
 

@@ -7,5 +7,6 @@ gem 'rufus-decision', git: 'https://github.com/jmettraux/rufus-decision.git'
 # gem 'rufus-decision', git: 'https://github.com/lastobelus/rufus-decision.git', branch: 'short_circuit_matchers'
 
 group :development do
+  gem 'listen'
   gem "guard-rspec"
 end

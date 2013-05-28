@@ -1,3 +1,5 @@
+* NOTE: optional space delimiter was removed *
+
 # Set Logic Matcher
 
 The SetLogic matcher allows a decision table cell to match based on set logic between the decision table and the corresponding entry in the hash being transformed.
@@ -9,13 +11,13 @@ When a decision table cell contains a set expression, the corresponding value in
 
         $(bob, mary)       => Set["bob", "mary"]
         $(bob mary, jeff)  => Set["bob mary", "jeff"]
-        $('bob rob', jeff) => Set["bob rob", "jeff"]
+        $(bob rob, jeff) => Set["bob rob", "jeff"]
         ${r: ruby_code}    => eval ruby code, ignoring unless it returns a set
         ${other_column}    => apply set conversion to other_column
         $(${c1}, ${c2})    => Set["c1 contents", "c2 contents"]
         bob, mary          => Set["bob", "mary"]
         bob mary           => Set["bob mary"]
-        'bob, mary', jeff  => Set["bob, mary", "jeff"]
+        "bob, mary", jeff  => Set["bob, mary", "jeff"]
 
 ## Decision Table Cell Syntax
 
@@ -87,7 +89,7 @@ Set expressions can use the following operators:
 
 ## Examples
 
-        $(bob jeff mary) & $in #= 2
+        $(bob, jeff, mary) & $in #= 2
         => does not match (bob, jeff, mary)
         => matches (bob, mary) or (jeff, mary) etc.
         => does not match (bob) or (jeff) or (mary)

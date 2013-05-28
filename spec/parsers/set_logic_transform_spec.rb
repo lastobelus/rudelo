@@ -152,7 +152,7 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
       end
       context "with cardinality" do
-        let(:expr){ "$(k z v) > $in #= 2" }
+        let(:expr){ "$(k, z, v) > $in #= 2" }
         it "transforms logic expression as match_expression.left" do
           expect(subject.left).to be_a_kind_of(
           Rudelo::Parsers::SetLogicTransform::SetLogicExpr)
@@ -166,7 +166,7 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
     context "construction expression" do
       context "alone" do
-        let(:expr){ "$(k z v) + $in" }
+        let(:expr){ "$(k, z, v) + $in" }
         it "transforms construction expression as match_expression.left" do
           expect(subject.left).to be_a_kind_of(
           Rudelo::Parsers::SetLogicTransform::SetConstructionExpr)
@@ -178,7 +178,7 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
       end
       context "with cardinality" do
-        let(:expr){ "$(k z v) + $in #= 2" }
+        let(:expr){ "$(k, z, v) + $in #= 2" }
         it "transforms construction expression as match_expression.left" do
           expect(subject.left).to be_a_kind_of(
           Rudelo::Parsers::SetLogicTransform::SetConstructionExpr)
@@ -201,11 +201,11 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
   context "cardinality examples" do
     specify{ expect(matching(
-     '#= 2', in_set: %w{a b})).to be_true }
+     '#= 2', in_set: %w{a, b})).to be_true }
     specify{ expect(matching(
-     '#< 3', in_set: %w{a b})).to be_true }
+     '#< 3', in_set: %w{a, b})).to be_true }
     specify{ expect(matching(
-     '#> 1', in_set: %w{a b})).to be_true }
+     '#> 1', in_set: %w{a, b})).to be_true }
     specify{ expect(matching(
      '#= 3', in_set: %w{a b})).to be_false }
     specify{ expect(matching(
@@ -216,42 +216,42 @@ describe "Rudelo::Parsers::SetLogicTransform" do
 
   context "construction examples" do
     specify{ expect(matching(
-     '$(a b c) & $in #= 2', in_set: %w{a b d})).to be_true }
+     '$(a, b, c) & $in #= 2', in_set: %w{a b d})).to be_true }
     specify{ expect(matching(
-     '$(a b c) & $in', in_set: %w{a b d})).to be_true }
+     '$(a, b, c) & $in', in_set: %w{a b d})).to be_true }
     specify{ expect(matching(
-     '$(a b c) & $in', in_set: %w{d e f})).to be_false }
+     '$(a, b, c) & $in', in_set: %w{d e f})).to be_false }
     specify{ expect(matching(
-     '$(a b c) & $in #= 2', in_set: %w{a k d})).to be_false }
+     '$(a, b, c) & $in #= 2', in_set: %w{a k d})).to be_false }
     specify{ expect(matching(
-     '$(a b c) + $in + $(e) #= 5', in_set: %w{b c d})).to be_true }
+     '$(a, b, c) + $in + $(e) #= 5', in_set: %w{b c d})).to be_true }
   end
 
   context "explicit set examples" do
     specify{ expect(matching(
-     '$(a b c)', in_set: %w{a b})).to be_true }
+     '$(a, b, c)', in_set: %w{a b})).to be_true }
     specify{ expect(matching(
-     '$(a b c)', in_set: %w{a k d})).to be_false }
+     '$(a, b, c)', in_set: %w{a k d})).to be_false }
   end
 
   context "logic examples" do
     specify{ expect(matching(
-     '$(a b c) > $in', in_set: %w{a b})).to be_true }
+     '$(a, b, c) > $in', in_set: %w{a b})).to be_true }
     specify{ expect(matching(
-     '$(a b c) > $in #=2', in_set: %w{a b})).to be_true }
+     '$(a, b, c) > $in #=2', in_set: %w{a b})).to be_true }
     specify{ expect(matching(
-     '$(a b c) > $in #=1', in_set: %w{a})).to be_true }
+     '$(a, b, c) > $in #=1', in_set: %w{a})).to be_true }
     specify{ expect(matching(
-     '$(a b c) ^ $in < $(a d k f)', in_set: %w{b c d})).to be_true }
+     '$(a, b, c) ^ $in < $(a, d, k, f)', in_set: %w{b c d})).to be_true }
     specify{ expect(matching(
-     '$(a b c) ^ $in < $(a e k f)', in_set: %w{b c d})).to be_false }
+     '$(a, b, c) ^ $in < $(a, e, k, f)', in_set: %w{b c d})).to be_false }
   end
 
   context "using transform with multiple in-set values" do
     it "allows re-using a transform" do
       abc = Set.new(%w{a b c})
       efg = Set.new(%w{e f g})
-      expr = '$in same-as $(a b c)'
+      expr = '$in same-as $(a, b, c)'
 
       transform = Rudelo::Parsers::SetLogicTransform.new(abc)
       ast = transform.apply(parser.parse(expr))

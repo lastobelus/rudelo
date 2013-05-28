@@ -27,16 +27,13 @@ describe "Rudelo::Parsers::SetValueParser" do
       })
 
       expect(parser).to  parse(%Q{bob mary}, trace: true).as({
-        element_list: [
-          {element: "bob"},
-          {element: "mary"}
-        ]
+        element_list: 
+          {element: "bob mary"}
       })
 
       expect(parser).to  parse(%Q{bob    mary, ralph}, trace: true).as({
         element_list: [
-          {element: "bob"},
-          {element: "mary"},
+          {element: "bob    mary"},
           {element: "ralph"}
         ]
       })
@@ -78,8 +75,7 @@ describe "Rudelo::Parsers::SetValueParser" do
       expect(parser).to  parse(%Q{$("bob", mary jeff)}, trace: true).as({
         element_list: [
           {element: "bob"},
-          {element: "mary"},
-          {element: "jeff"},          
+          {element: "mary jeff"},          
         ]
       })
 

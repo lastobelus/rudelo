@@ -31,7 +31,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
 
     it "parses set construction to an iterative operation list" do
 
-      expect(expr_parser).to    parse('$(bob mary) union $(ralph jeff) & $in', trace: true).as({
+      expect(expr_parser).to    parse('$(bob, mary) union $(ralph, jeff) & $in', trace: true).as({
         :set_construction_expression=>{
           :left=>{:element_list=>[{:element=>"bob"}, {:element=>"mary"}] },
           :right=>[
@@ -68,7 +68,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
     let(:expr_parser){ parser.set_logic_expression }
 
     it "parses set logic to a left-right tree" do
-      expect(expr_parser).to    parse('$(bob mary) < $(ralph jeff bob mary)', trace: true).as({
+      expect(expr_parser).to    parse('$(bob, mary) < $(ralph, jeff, bob, mary)', trace: true).as({
         :set_logic_expression=>{
           :left=>{:element_list=>[
             {:element=>"bob"}, {:element=>"mary"}] },
@@ -80,7 +80,7 @@ describe "Rudelo::Parsers::SetLogicParser" do
     end
 
     it "parses the left hand side as a set construction expression" do
-      expect(expr_parser).to    parse('$(bob mary) union $in < $(ralph jeff bob mary)', trace: true).as({
+      expect(expr_parser).to    parse('$(bob, mary) union $in < $(ralph, jeff, bob, mary)', trace: true).as({
         :set_logic_expression=>{
           :left=> {
             :set_construction_expression=>{
@@ -98,17 +98,17 @@ describe "Rudelo::Parsers::SetLogicParser" do
     end
 
     it "parses set logic ops in symbol form" do
-      expect(expr_parser).to    parse('$(bob mary) < $in', trace: true)
-      expect(expr_parser).to    parse('$(bob mary) <= $in', trace: true)
-      expect(expr_parser).to    parse('$(bob mary)>$in', trace: true)
-      expect(expr_parser).to    parse('$(bob mary) >= $in', trace: true)
+      expect(expr_parser).to    parse('$(bob, mary) < $in', trace: true)
+      expect(expr_parser).to    parse('$(bob, mary) <= $in', trace: true)
+      expect(expr_parser).to    parse('$(bob, mary)>$in', trace: true)
+      expect(expr_parser).to    parse('$(bob, mary) >= $in', trace: true)
     end
 
     it "parses set logic ops in word form" do
-      expect(expr_parser).to    parse('$in superset $(bob mary)', trace: true)
-      expect(expr_parser).to    parse('$in subset $(bob mary)', trace: true)
-      expect(expr_parser).to    parse('$in proper-superset $(bob mary)', trace: true)
-      expect(expr_parser).to    parse('$in proper-subset $(bob mary)', trace: true)
+      expect(expr_parser).to    parse('$in superset $(bob, mary)', trace: true)
+      expect(expr_parser).to    parse('$in subset $(bob, mary)', trace: true)
+      expect(expr_parser).to    parse('$in proper-superset $(bob, mary)', trace: true)
+      expect(expr_parser).to    parse('$in proper-subset $(bob, mary)', trace: true)
     end
 
   end

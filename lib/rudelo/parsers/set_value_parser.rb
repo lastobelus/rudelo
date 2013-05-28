@@ -32,7 +32,7 @@ module Rudelo
       rule(:close_set)         { str(')') }
 
       rule(:unquoted_element)      { 
-         (close_set.absent? >> space.absent? >> comma.absent? >> any).
+         (close_set.absent? >> comma.absent? >> any).
         repeat(1).as(:element) }
       rule(:quoted_element)    { 
         (quote >> 
@@ -40,7 +40,7 @@ module Rudelo
         as(:element) >> 
         quote)}
       rule(:element)           { quoted_element | unquoted_element }
-      rule(:element_delimiter)    { (comma | space) >> space? }
+      rule(:element_delimiter)    { (comma) >> space? }
 
 
       rule(:bare_element_list) { 

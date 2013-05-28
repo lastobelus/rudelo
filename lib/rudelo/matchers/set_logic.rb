@@ -29,17 +29,31 @@ module Rudelo
   module Matchers
     class SetLogic < Rufus::Decision::Matcher
       SYNTAX_EXPR = %r{\$\([^)]*\)|\$in}
-      attr_accessor :force
 
-      def should_match?(cell, value)
+      # if true, will raise if a cell is not valid set logic syntax
+      attr_accessor :force
+      attr_writer :short_circuit
+
+      def short_circuit
+        defined?(@short_circuit) ? @short_circuit : true
+      end
+
+      def return_on_cant_match
+        short_circuit ? :break : false
+      end
+
+      def can_match?(cell)
         ! (cell =~ SYNTAX_EXPR).nil?
       end
 
       def matches?(cell, value)
+        puts "\n matches? `#{cell}` => `#{value}`"
+        return false unless force || can_match?(cell)
         evaluator = ast(cell)
-        return false if evaluator.nil?
+        return return_on_cant_match if evaluator.nil?
         in_set = value_transform.apply(value_parser.parse(value)) unless in_set.is_a?(Set)
-        evaluator.eval(in_set)
+        result = evaluator.eval(in_set)
+        return result ? true : return_on_cant_match
       end
 
       def cell_substitution?

@@ -57,10 +57,11 @@ For a detailed description of the mini-language the set logic matcher uses, see 
 
 ## Short-Circuiting
 
-The current released version of rufus-decision does not provide for matchers to shortcircuit. This can cause errors if you have a SetLogic matcher followed by a String matcher. I have a branch of rufus-decision that does short-circuiting that is pending review, if you need to use it add this to your Gemfile:
+By default, Set Logic matchers short-circuit. That is to-say, if a cell does not match, the set logic matcher tells rufus-decision not to try any more matchers if the cell was valid set logic syntax. You can change this behaviour by setting ```matcher.short_circuit = false```
 
-```gem 'rufus-decision', git: 'https://github.com/lastobelus/rufus-decision.git', branch: 'short_circuit_matchers'
-```
+## Force Parsing
+
+By default Set Logic matchers return false for ```matches?``` if they cannot parse a cell. Set ```matcher.force = true``` to force parsing and raise errors if a cell cannot be parsed.
 
 ## Contributing
 

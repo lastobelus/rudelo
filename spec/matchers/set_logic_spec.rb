@@ -23,6 +23,11 @@ describe "Rudelo::Matchers::SetLogic" do
     expect(subject.matches?(cell2, 'a,b,c')).to eq(:break)
   end
 
+  it "matches explicit set syntax" do
+    expect(subject.matches?('$(a, b, c)', 'a,b,c')).to be_true
+    expect(subject.matches?('$(a, b, c)', 'a,b,d')).to eq(:break)
+  end
+
   context "rufus-decision" do
     let(:table){
       table = Rufus::Decision::Table.new(%{

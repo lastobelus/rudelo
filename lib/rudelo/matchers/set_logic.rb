@@ -47,7 +47,7 @@ module Rudelo
       end
 
       def matches?(cell, value)
-        puts "\n matches? `#{cell}` => `#{value}`"
+        # puts "\n matches? `#{cell}` => `#{value}`"
         return false unless force || can_match?(cell)
         evaluator = ast(cell)
         return return_on_cant_match if evaluator.nil?

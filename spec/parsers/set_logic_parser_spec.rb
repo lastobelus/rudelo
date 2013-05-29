@@ -141,6 +141,8 @@ describe "Rudelo::Parsers::SetLogicParser" do
     it "parses a set logic expression with optional cardinality" do
       expect(expr_parser).to    parse('$(bob, jeff) <= $in', trace: true)
       expect(expr_parser).to    parse('$(bob, jeff) <= $in #> 3', trace: true)
+      expect(expr_parser).to    parse('$in intersection $(Differentiation Kit, Human Embryonic Progenitor Package, Growth Media, Basal Media) #> 0', trace: true)
+
     end
 
   end

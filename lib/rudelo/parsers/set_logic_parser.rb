@@ -9,7 +9,7 @@ module Rudelo
       rule(:digit)   { match("[0-9]") }
 
       rule(:integer) do
-        str("-").maybe >> match("[1-9]") >> digit.repeat
+        str("-").maybe >> digit.repeat(1)
       end
     end
 

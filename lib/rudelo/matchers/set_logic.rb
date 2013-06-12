@@ -28,7 +28,7 @@ require 'rudelo/parsers/set_logic_transform'
 module Rudelo
   module Matchers
     class SetLogic < Rufus::Decision::Matcher
-      SYNTAX_EXPR = %r{\$\([^)]*\)|\$in}
+      SYNTAX_EXPR = %r{^\$\([^)]*\)|\$in|#[><=]}
 
       # if true, will raise if a cell is not valid set logic syntax
       attr_accessor :force
@@ -51,7 +51,10 @@ module Rudelo
         return false unless force || can_match?(cell)
         evaluator = ast(cell)
         return return_on_cant_match if evaluator.nil?
-        in_set = value_transform.apply(value_parser.parse(value)) unless in_set.is_a?(Set)
+        in_set = nil
+        in_set = value if value.is_a?(Set)
+        in_set = Set.new if value == ''
+        in_set ||= value_transform.apply(value_parser.parse(value))
         result = evaluator.eval(in_set)
         return result ? true : return_on_cant_match
       end
